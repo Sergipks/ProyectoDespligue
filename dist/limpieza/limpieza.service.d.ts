@@ -34,10 +34,8 @@ export declare class LimpiezaService {
     create(createLimpiezaDto: CreateLimpiezaDto): Promise<import("mongoose").Document<unknown, {}, Limpieza> & Limpieza & {
         _id: import("mongoose").Types.ObjectId;
     }>;
-    findAllByRoomId(id: string): Promise<import("mongoose").Document<unknown, {}, Limpieza> & Limpieza & {
-        _id: import("mongoose").Types.ObjectId;
-    }>;
+    findAllByRoomId(id: string): Promise<Limpieza[]>;
     update(id: string, updateLimpiezaDto: UpdateLimpiezaDto): Promise<Limpieza>;
-    checkLimpiezaToday(habitacionId: string): Promise<boolean>;
+    checkLimpiezaToday(id: string): Promise<boolean>;
     getAllHabitaciones(): Promise<Habitacion[]>;
 }

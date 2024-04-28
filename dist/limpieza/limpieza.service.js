@@ -26,8 +26,10 @@ let LimpiezaService = class LimpiezaService {
         return nuevaLimpieza;
     }
     async findAllByRoomId(id) {
-        const limpiezas = await this.limpiezaModel.findById(id).sort({ fecha: -1 }).exec();
-        return limpiezas;
+        return this.limpiezaModel
+            .find({ habitacion: id })
+            .sort({ fecha: -1 })
+            .exec();
     }
     async update(id, updateLimpiezaDto) {
         const limpieza = await this.limpiezaModel.findById(id);
@@ -48,8 +50,8 @@ let LimpiezaService = class LimpiezaService {
             throw new common_1.BadRequestException('La actualización no fue exitosa');
         }
     }
-    async checkLimpiezaToday(habitacionId) {
-        const habitacion = await this.habitacionModel.findById(habitacionId);
+    async checkLimpiezaToday(id) {
+        const habitacion = await this.habitacionModel.findById(id);
         if (!habitacion) {
             throw new common_1.NotFoundException('Habitación no encontrada');
         }

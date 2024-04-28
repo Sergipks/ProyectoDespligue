@@ -3,26 +3,23 @@ import { LimpiezaService } from './limpieza.service';
 import { CreateLimpiezaDto } from './dto/create-limpieza.dto';
 import { UpdateLimpiezaDto } from './dto/update-limpieza.dto';
 import { Habitacion } from 'src/habitacion/entities/habitacion.entity';
-import { UseGuards } from '@nestjs/common';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { Limpieza } from './entities/limpieza.entity';
 
 @Controller('limpieza')
 @UsePipes(ValidationPipe)
 export class LimpiezaController {
   constructor(private readonly limpiezaService: LimpiezaService) {}
 
-  @UseGuards(AuthGuard)
   @Post()
   create(@Body() createLimpiezaDto: CreateLimpiezaDto) {
     return this.limpiezaService.create(createLimpiezaDto);
   }
 
   @Get(':id')
-  findAllByRoomId(@Param('id') id: string) {
+  async findAllByRoomId(@Param('id') id: string): Promise<Limpieza[]> {
     return this.limpiezaService.findAllByRoomId(id);
   }
 
-  @UseGuards(AuthGuard)
   @Put(':id')
   update(@Param('id') id: string, @Body() updateLimpiezaDto: UpdateLimpiezaDto) {
     const updatedLimpieza = this.limpiezaService.update(id, updateLimpiezaDto);
@@ -55,7 +52,9 @@ export class LimpiezaController {
 
     // Filtrar las habitaciones que se han limpiado hoy
     for (const habitacion of habitaciones) {
-      const limpiaHoy = await this.limpiezaService.checkLimpiezaToday(habitacion.id);
+      const limpiaHoy = await this.limpiezaService.checkLimpiezaToday(
+        habitacion.id,
+      );
       if (limpiaHoy) {
         habitacionesLimpiasHoy.push(habitacion);
       }

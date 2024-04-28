@@ -27,16 +27,15 @@ import { LimpiezaService } from './limpieza.service';
 import { CreateLimpiezaDto } from './dto/create-limpieza.dto';
 import { UpdateLimpiezaDto } from './dto/update-limpieza.dto';
 import { Habitacion } from 'src/habitacion/entities/habitacion.entity';
+import { Limpieza } from './entities/limpieza.entity';
 export declare class LimpiezaController {
     private readonly limpiezaService;
     constructor(limpiezaService: LimpiezaService);
-    create(createLimpiezaDto: CreateLimpiezaDto): Promise<import("mongoose").Document<unknown, {}, import("./entities/limpieza.entity").Limpieza> & import("./entities/limpieza.entity").Limpieza & {
+    create(createLimpiezaDto: CreateLimpiezaDto): Promise<import("mongoose").Document<unknown, {}, Limpieza> & Limpieza & {
         _id: import("mongoose").Types.ObjectId;
     }>;
-    findAllByRoomId(id: string): Promise<import("mongoose").Document<unknown, {}, import("./entities/limpieza.entity").Limpieza> & import("./entities/limpieza.entity").Limpieza & {
-        _id: import("mongoose").Types.ObjectId;
-    }>;
-    update(id: string, updateLimpiezaDto: UpdateLimpiezaDto): Promise<import("./entities/limpieza.entity").Limpieza>;
+    findAllByRoomId(id: string): Promise<Limpieza[]>;
+    update(id: string, updateLimpiezaDto: UpdateLimpiezaDto): Promise<Limpieza>;
     checkLimpiezaToday(id: string): Promise<{
         ok: boolean;
     }>;

@@ -14,17 +14,23 @@ export class LimpiezaService {
     @InjectModel('habitaciones')
     private readonly habitacionModel: Model<Habitacion>,
   ) {}
+
   async create(createLimpiezaDto: CreateLimpiezaDto) {
     const nuevaLimpieza = await this.limpiezaModel.create(createLimpiezaDto);
     return nuevaLimpieza;
   }
 
-  async findAllByRoomId(id: string) {
-    const limpiezas = await this.limpiezaModel.findById(id).sort({ fecha: -1 }).exec();
-    return limpiezas;
+  async findAllByRoomId(id: string): Promise<Limpieza[]> {
+    return this.limpiezaModel
+      .find({ habitacion: id })
+      .sort({ fecha: -1 })
+      .exec();
   }
 
-  async update(id: string, updateLimpiezaDto: UpdateLimpiezaDto): Promise<Limpieza> {
+  async update(
+    id: string,
+    updateLimpiezaDto: UpdateLimpiezaDto,
+  ): Promise<Limpieza> {
     const limpieza = await this.limpiezaModel.findById(id);
     if (!limpieza) {
       throw new NotFoundException('Limpieza no encontrada');
@@ -45,8 +51,8 @@ export class LimpiezaService {
     }
   }
 
-  async checkLimpiezaToday(habitacionId: string): Promise<boolean> {
-    const habitacion = await this.habitacionModel.findById(habitacionId);
+  async checkLimpiezaToday(id: string): Promise<boolean> {
+    const habitacion = await this.habitacionModel.findById(id);
     if (!habitacion) {
       throw new NotFoundException('Habitación no encontrada');
     }
