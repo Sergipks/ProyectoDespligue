@@ -25,12 +25,20 @@
 /// <reference types="mongoose/types/inferschematype" />
 import { LimpiezaService } from './limpieza.service';
 import { CreateLimpiezaDto } from './dto/create-limpieza.dto';
-import { Limpieza } from './entities/limpieza.entity';
+import { UpdateLimpiezaDto } from './dto/update-limpieza.dto';
+import { Habitacion } from 'src/habitacion/entities/habitacion.entity';
 export declare class LimpiezaController {
     private readonly limpiezaService;
     constructor(limpiezaService: LimpiezaService);
-    create(createLimpiezaDto: CreateLimpiezaDto): Promise<import("mongoose").Document<unknown, {}, Limpieza> & Limpieza & {
+    create(createLimpiezaDto: CreateLimpiezaDto): Promise<import("mongoose").Document<unknown, {}, import("./entities/limpieza.entity").Limpieza> & import("./entities/limpieza.entity").Limpieza & {
         _id: import("mongoose").Types.ObjectId;
     }>;
-    findAllByRoomId(id: string): Promise<Limpieza[]>;
+    findAllByRoomId(id: string): Promise<import("mongoose").Document<unknown, {}, import("./entities/limpieza.entity").Limpieza> & import("./entities/limpieza.entity").Limpieza & {
+        _id: import("mongoose").Types.ObjectId;
+    }>;
+    update(id: string, updateLimpiezaDto: UpdateLimpiezaDto): Promise<import("./entities/limpieza.entity").Limpieza>;
+    checkLimpiezaToday(id: string): Promise<{
+        ok: boolean;
+    }>;
+    getHabitacionesLimpiasHoy(): Promise<Habitacion[]>;
 }

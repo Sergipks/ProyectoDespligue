@@ -17,22 +17,57 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 let LimpiezaService = class LimpiezaService {
-    constructor(limpiezaModel) {
+    constructor(limpiezaModel, habitacionModel) {
         this.limpiezaModel = limpiezaModel;
+        this.habitacionModel = habitacionModel;
     }
     async create(createLimpiezaDto) {
         const nuevaLimpieza = await this.limpiezaModel.create(createLimpiezaDto);
         return nuevaLimpieza;
     }
-    async findAllByRoomId(habitacionId) {
-        const limpiezas = await this.limpiezaModel.find({ habitacion: habitacionId }).sort({ fecha: -1 }).exec();
+    async findAllByRoomId(id) {
+        const limpiezas = await this.limpiezaModel.findById(id).sort({ fecha: -1 }).exec();
         return limpiezas;
+    }
+    async update(id, updateLimpiezaDto) {
+        const limpieza = await this.limpiezaModel.findById(id);
+        if (!limpieza) {
+            throw new common_1.NotFoundException('Limpieza no encontrada');
+        }
+        if (updateLimpiezaDto.fecha) {
+            limpieza.fecha = updateLimpiezaDto.fecha;
+        }
+        if (updateLimpiezaDto.observaciones) {
+            limpieza.observaciones = updateLimpiezaDto.observaciones;
+        }
+        try {
+            await limpieza.save();
+            return limpieza;
+        }
+        catch (error) {
+            throw new common_1.BadRequestException('La actualización no fue exitosa');
+        }
+    }
+    async checkLimpiezaToday(habitacionId) {
+        const habitacion = await this.habitacionModel.findById(habitacionId);
+        if (!habitacion) {
+            throw new common_1.NotFoundException('Habitación no encontrada');
+        }
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0);
+        const ultimaLimpieza = habitacion.ultimaLimpieza;
+        return ultimaLimpieza.getTime() === hoy.getTime();
+    }
+    async getAllHabitaciones() {
+        return this.habitacionModel.find().exec();
     }
 };
 exports.LimpiezaService = LimpiezaService;
 exports.LimpiezaService = LimpiezaService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)('limpiezas')),
-    __metadata("design:paramtypes", [mongoose_2.Model])
+    __param(1, (0, mongoose_1.InjectModel)('habitaciones')),
+    __metadata("design:paramtypes", [mongoose_2.Model,
+        mongoose_2.Model])
 ], LimpiezaService);
 //# sourceMappingURL=limpieza.service.js.map
