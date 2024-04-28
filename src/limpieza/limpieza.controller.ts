@@ -4,12 +4,15 @@ import { CreateLimpiezaDto } from './dto/create-limpieza.dto';
 import { UpdateLimpiezaDto } from './dto/update-limpieza.dto';
 import { Habitacion } from 'src/habitacion/entities/habitacion.entity';
 import { Limpieza } from './entities/limpieza.entity';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('limpieza')
 @UsePipes(ValidationPipe)
 export class LimpiezaController {
   constructor(private readonly limpiezaService: LimpiezaService) {}
 
+  @UseGuards(AuthGuard)
   @Post()
   create(@Body() createLimpiezaDto: CreateLimpiezaDto) {
     return this.limpiezaService.create(createLimpiezaDto);
@@ -20,6 +23,7 @@ export class LimpiezaController {
     return this.limpiezaService.findAllByRoomId(id);
   }
 
+  @UseGuards(AuthGuard)
   @Put(':id')
   update(@Param('id') id: string, @Body() updateLimpiezaDto: UpdateLimpiezaDto) {
     const updatedLimpieza = this.limpiezaService.update(id, updateLimpiezaDto);
