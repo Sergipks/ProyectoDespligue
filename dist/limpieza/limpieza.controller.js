@@ -16,6 +16,9 @@ exports.LimpiezaController = void 0;
 const common_1 = require("@nestjs/common");
 const limpieza_service_1 = require("./limpieza.service");
 const create_limpieza_dto_1 = require("./dto/create-limpieza.dto");
+const update_limpieza_dto_1 = require("./dto/update-limpieza.dto");
+const common_2 = require("@nestjs/common");
+const auth_guard_1 = require("../auth/auth.guard");
 let LimpiezaController = class LimpiezaController {
     constructor(limpiezaService) {
         this.limpiezaService = limpiezaService;
@@ -23,12 +26,45 @@ let LimpiezaController = class LimpiezaController {
     create(createLimpiezaDto) {
         return this.limpiezaService.create(createLimpiezaDto);
     }
-    async findAllByRoomId(id) {
+    findAllByRoomId(id) {
         return this.limpiezaService.findAllByRoomId(id);
+    }
+    update(id, updateLimpiezaDto) {
+        const updatedLimpieza = this.limpiezaService.update(id, updateLimpiezaDto);
+        if (!updatedLimpieza) {
+            throw new common_1.NotFoundException('Limpieza no encontrada');
+        }
+        return updatedLimpieza;
+    }
+    async checkLimpiezaToday(id) {
+        try {
+            const limpiaHoy = await this.limpiezaService.checkLimpiezaToday(id);
+            return { ok: limpiaHoy };
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw new common_1.NotFoundException(error.message);
+            }
+            else {
+                throw error;
+            }
+        }
+    }
+    async getHabitacionesLimpiasHoy() {
+        const habitacionesLimpiasHoy = [];
+        const habitaciones = await this.limpiezaService.getAllHabitaciones();
+        for (const habitacion of habitaciones) {
+            const limpiaHoy = await this.limpiezaService.checkLimpiezaToday(habitacion.id);
+            if (limpiaHoy) {
+                habitacionesLimpiasHoy.push(habitacion);
+            }
+        }
+        return habitacionesLimpiasHoy;
     }
 };
 exports.LimpiezaController = LimpiezaController;
 __decorate([
+    (0, common_2.UseGuards)(auth_guard_1.AuthGuard),
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -40,8 +76,30 @@ __decorate([
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], LimpiezaController.prototype, "findAllByRoomId", null);
+__decorate([
+    (0, common_2.UseGuards)(auth_guard_1.AuthGuard),
+    (0, common_1.Put)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, update_limpieza_dto_1.UpdateLimpiezaDto]),
+    __metadata("design:returntype", void 0)
+], LimpiezaController.prototype, "update", null);
+__decorate([
+    (0, common_1.Get)('limpia/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], LimpiezaController.prototype, "checkLimpiezaToday", null);
+__decorate([
+    (0, common_1.Get)('limpias'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], LimpiezaController.prototype, "getHabitacionesLimpiasHoy", null);
 exports.LimpiezaController = LimpiezaController = __decorate([
     (0, common_1.Controller)('limpieza'),
     (0, common_1.UsePipes)(common_1.ValidationPipe),

@@ -12,6 +12,8 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const limpieza_module_1 = require("./limpieza/limpieza.module");
 const mongoose_1 = require("@nestjs/mongoose");
+const usuario_module_1 = require("./usuario/usuario.module");
+const auth_module_1 = require("./auth/auth.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -19,6 +21,8 @@ exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [limpieza_module_1.LimpiezaModule,
             mongoose_1.MongooseModule.forRoot('mongodb://127.0.0.1:27017/hotel'),
+            usuario_module_1.UsuarioModule,
+            auth_module_1.AuthModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

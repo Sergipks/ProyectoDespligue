@@ -22,22 +22,13 @@
 /// <reference types="mongoose/types/validation" />
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
-import { Model } from 'mongoose';
-import { Limpieza } from './entities/limpieza.entity';
-import { CreateLimpiezaDto } from './dto/create-limpieza.dto';
-import { UpdateLimpiezaDto } from './dto/update-limpieza.dto';
-import { Habitacion } from 'src/habitacion/entities/habitacion.entity';
-export declare class LimpiezaService {
-    private readonly limpiezaModel;
-    private readonly habitacionModel;
-    constructor(limpiezaModel: Model<Limpieza>, habitacionModel: Model<Habitacion>);
-    create(createLimpiezaDto: CreateLimpiezaDto): Promise<import("mongoose").Document<unknown, {}, Limpieza> & Limpieza & {
-        _id: import("mongoose").Types.ObjectId;
-    }>;
-    findAllByRoomId(id: string): Promise<import("mongoose").Document<unknown, {}, Limpieza> & Limpieza & {
-        _id: import("mongoose").Types.ObjectId;
-    }>;
-    update(id: string, updateLimpiezaDto: UpdateLimpiezaDto): Promise<Limpieza>;
-    checkLimpiezaToday(habitacionId: string): Promise<boolean>;
-    getAllHabitaciones(): Promise<Habitacion[]>;
+import { Document } from 'mongoose';
+export declare class Usuario extends Document {
+    login: string;
+    password: string;
 }
+export declare const UsuarioSchema: import("mongoose").Schema<Usuario, import("mongoose").Model<Usuario, any, any, any, Document<unknown, any, Usuario> & Usuario & {
+    _id: import("mongoose").Types.ObjectId;
+}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Usuario, Document<unknown, {}, import("mongoose").FlatRecord<Usuario>> & import("mongoose").FlatRecord<Usuario> & {
+    _id: import("mongoose").Types.ObjectId;
+}>;

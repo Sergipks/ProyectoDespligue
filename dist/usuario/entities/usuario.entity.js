@@ -9,19 +9,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateLimpiezaDto = void 0;
-const class_validator_1 = require("class-validator");
-class UpdateLimpiezaDto {
-}
-exports.UpdateLimpiezaDto = UpdateLimpiezaDto;
+exports.UsuarioSchema = exports.Usuario = void 0;
+const mongoose_1 = require("@nestjs/mongoose");
+const mongoose_2 = require("mongoose");
+let Usuario = class Usuario extends mongoose_2.Document {
+};
+exports.Usuario = Usuario;
 __decorate([
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsDateString)(),
-    __metadata("design:type", Date)
-], UpdateLimpiezaDto.prototype, "fecha", void 0);
-__decorate([
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsString)(),
+    (0, mongoose_1.Prop)({
+        required: true,
+        min: 1,
+        max: 20,
+    }),
     __metadata("design:type", String)
-], UpdateLimpiezaDto.prototype, "observaciones", void 0);
-//# sourceMappingURL=update-limpieza.dto.js.map
+], Usuario.prototype, "login", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({
+        required: true,
+    }),
+    __metadata("design:type", String)
+], Usuario.prototype, "password", void 0);
+exports.Usuario = Usuario = __decorate([
+    (0, mongoose_1.Schema)()
+], Usuario);
+exports.UsuarioSchema = mongoose_1.SchemaFactory.createForClass(Usuario);
+//# sourceMappingURL=usuario.entity.js.map

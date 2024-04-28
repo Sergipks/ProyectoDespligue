@@ -11,7 +11,7 @@ export class LimpiezaService {
   constructor(
     @InjectModel('limpiezas')
     private readonly limpiezaModel: Model<Limpieza>,
-    @InjectModel(Habitacion.name)
+    @InjectModel('habitaciones')
     private readonly habitacionModel: Model<Habitacion>,
   ) {}
   async create(createLimpiezaDto: CreateLimpiezaDto) {
