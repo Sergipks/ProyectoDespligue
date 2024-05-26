@@ -8,7 +8,7 @@ import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [LimpiezaModule, 
-    MongooseModule.forRoot('mongodb://127.0.0.1:27017/hotel'),
+    MongooseModule.forRoot('mongodb://mongoProyecto/hotel'),
     UsuarioModule,
     AuthModule
   ],

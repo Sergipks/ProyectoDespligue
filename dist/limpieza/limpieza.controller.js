@@ -17,6 +17,8 @@ const common_1 = require("@nestjs/common");
 const limpieza_service_1 = require("./limpieza.service");
 const create_limpieza_dto_1 = require("./dto/create-limpieza.dto");
 const update_limpieza_dto_1 = require("./dto/update-limpieza.dto");
+const common_2 = require("@nestjs/common");
+const auth_guard_1 = require("../auth/auth.guard");
 let LimpiezaController = class LimpiezaController {
     constructor(limpiezaService) {
         this.limpiezaService = limpiezaService;
@@ -62,6 +64,7 @@ let LimpiezaController = class LimpiezaController {
 };
 exports.LimpiezaController = LimpiezaController;
 __decorate([
+    (0, common_2.UseGuards)(auth_guard_1.AuthGuard),
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -76,6 +79,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], LimpiezaController.prototype, "findAllByRoomId", null);
 __decorate([
+    (0, common_2.UseGuards)(auth_guard_1.AuthGuard),
     (0, common_1.Put)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
